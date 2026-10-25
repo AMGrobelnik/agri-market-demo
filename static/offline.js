@@ -299,10 +299,12 @@
       if (path === "fund") return json(fund());
       if (path === "me") return json(me(url.searchParams.get("token")));
       if (path === "prices") return json({ error: "not in the offline demo", series: {} });
+      if (path.startsWith("byo/")) return json({ error: "theories are scored only on the live app" }, 404);
       return json({ error: "not available in the offline demo" }, 404);
     }
     if (path === "verify") return file(body && body.tamper ? "verify-tamper.json" : "verify.json");
     await ready;
+    if (path === "byo") return json({ error: "Scoring your own theory needs the live app: Gemini backtests it on the server." }, 503);
     if (path === "join") return json(await join(body));
     if (path === "bet" || path === "agents/bet") return json(bet(body));
     if (path === "forecast") return json(forecast(body));
